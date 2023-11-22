@@ -5,10 +5,10 @@
   "description": "",
   "scripts": {
     "prepare": "husky install",
-    "dev": "vite --port 3333 --open --host",
+    "dev": "vite --port 3003 --open --host",
     "build": "vite build",
     "typecheck": "vue-tsc --noEmit",
-    "preview": "vite preview --host",
+    "preview": "vite preview --host --port 3003",
     "lint": "eslint . --ext=.ts,.vue",
     "test": "vitest",
     "up": "taze major -I"
