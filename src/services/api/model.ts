@@ -76,3 +76,21 @@ export interface HardwareKey {
   value: string
   updated: string
 }
+
+export interface HistoryTracker {
+  success: boolean
+  list: ListHistory[]
+  limit_exceeded: boolean
+}
+
+export interface ListHistory {
+  address: string
+  satellites: number
+  get_time: string
+  mileage: number
+  heading: number
+  speed: number
+  alt: number
+  lat: number
+  lng: number
+}

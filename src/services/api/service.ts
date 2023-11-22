@@ -1,5 +1,5 @@
 import ky from "ky"
-import type { ListDeviceProperties, RealtimeProperties } from "./model"
+import type { HistoryTracker, ListDeviceProperties, RealtimeProperties } from "./model"
 
 export class TrackingApi {
   async getList() {
@@ -21,5 +21,19 @@ export class TrackingApi {
         }
       })
       .json<RealtimeProperties>()
+  }
+
+  async getStatesHistory(trackerId: number, startDate: string, endDate: string) {
+    return await ky
+      .post(`${import.meta.env.VITE_LACAK_URL}/track/read/`, {
+        json: {
+          hash: import.meta.env.VITE_HASH,
+          tracker_id: trackerId,
+          from: startDate,
+          to: endDate,
+          filter: true
+        }
+      })
+      .json<HistoryTracker>()
   }
 }

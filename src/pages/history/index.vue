@@ -3,12 +3,14 @@ import Feature from "ol/Feature"
 import Map from "ol/Map"
 import View from "ol/View"
 import { Point } from "ol/geom"
-import { Circle, Fill, Stroke, Style } from "ol/style"
+import { Circle, Fill, Style } from "ol/style"
 import { Tile as TileLayer } from "ol/layer"
 import { OSM } from "ol/source"
 import VectorSource from "ol/source/Vector"
 import VectorLayer from "ol/layer/Vector"
+import GeoJSON from "ol/format/GeoJSON"
 import { TrackingApi } from "~/services/api/service"
+import { lineLayer } from "~/utils/layers"
 
 const map = ref<Map>()
 const mapRef = ref<HTMLElement>()
@@ -19,35 +21,38 @@ const FULL_VIEW = {
   projection: "EPSG:4326"
 }
 
-/* TODO: get realtime position */
+/* TODO: plot tracking history */
 const trackingApi = new TrackingApi()
 const listTrackers: number[] = []
 const pointLayer = ref()
-async function plotRealtime() {
+const coordinates = ref<number[][]>()
+async function getListAvailable() {
+  // get list available device
   const listDevice = await trackingApi.getList()
   listTrackers.push(...listDevice.list.map((item: any) => item.id))
-  const realtime = await trackingApi.getStates(listTrackers)
-  const locationData = Object.keys(realtime.states).map((listTrackers: any) => {
-    const tracker = realtime.states[listTrackers]
-    return {
-      id: listTrackers,
-      updated: tracker.gps.updated,
-      movement_status: tracker.movement_status,
-      lat: tracker.gps.location.lat,
-      lng: tracker.gps.location.lng
-    }
+
+  // get history position from only listTrackers[1]
+  const tracking = await trackingApi.getStatesHistory(
+    listTrackers[1],
+    "2023-11-21 00:00:00",
+    "2023-11-21 23:59:59"
+  )
+
+  // fill the coordinates to create line
+  coordinates.value = Object.keys(tracking.list).map((item: any) => {
+    const tracker = tracking.list[item]
+    return [tracker.lng, tracker.lat]
   })
 
-  locationData.forEach((point) => {
+  tracking.list.forEach((point) => {
     const marker = new Feature({
       geometry: new Point([point.lng, point.lat])
     })
 
     const markerStyle = new Style({
       image: new Circle({
-        radius: 7,
-        fill: new Fill({ color: "#b91c22" }),
-        stroke: new Stroke({ color: "white", width: 2 })
+        radius: 3,
+        fill: new Fill({ color: "#b91c22" })
       })
     })
 
@@ -59,9 +64,18 @@ async function plotRealtime() {
     pointLayer.value = new VectorLayer({
       source: vectorSource
     })
-
     map.value!.addLayer(pointLayer.value)
   })
+}
+
+async function plotLineTracking() {
+  const initLine = {
+    type: "LineString",
+    coordinates: coordinates.value
+  }
+  lineLayer.getSource()!.clear()
+  lineLayer.getSource()!.addFeatures(new GeoJSON().readFeatures(initLine))
+  map.value!.addLayer(lineLayer)
 }
 
 onMounted(async () => {
@@ -76,7 +90,12 @@ onMounted(async () => {
     visible: true
   })
   map.value.addLayer(osmBasemap)
-  await plotRealtime()
+  await getListAvailable()
+  map.value.getView().fit(pointLayer.value.getSource().getExtent(), {
+    duration: 800,
+    maxZoom: 9
+  })
+  await plotLineTracking()
 })
 </script>
 
