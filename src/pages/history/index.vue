@@ -51,7 +51,7 @@ async function getListAvailable() {
 
     const markerStyle = new Style({
       image: new Circle({
-        radius: 3,
+        radius: 5,
         fill: new Fill({ color: "#b91c22" })
       })
     })

@@ -6,7 +6,7 @@ export const lineLayer = new VectorLayer({
   source: new VectorSource(),
   style: new Style({
     stroke: new Stroke({
-      color: "#FFFF00",
+      color: "#35155D",
       lineDash: [2, 8],
       width: 2
     })
