@@ -5,7 +5,7 @@ import View from "ol/View"
 import { Point } from "ol/geom"
 import { Circle, Fill, Stroke, Style } from "ol/style"
 import { Tile as TileLayer } from "ol/layer"
-import { OSM } from "ol/source"
+import { XYZ } from "ol/source"
 import VectorSource from "ol/source/Vector"
 import VectorLayer from "ol/layer/Vector"
 import { TrackingApi } from "~/services/api/service"
@@ -71,12 +71,18 @@ onMounted(async () => {
   })
 
   const osmBasemap = new TileLayer({
-    source: new OSM(),
+    source: new XYZ({
+      url: "https://tiles.supermap.id/styles/positron/{z}/{x}/{y}.png"
+    }),
     preload: Number.POSITIVE_INFINITY,
     visible: true
   })
   map.value.addLayer(osmBasemap)
   await plotRealtime()
+  map.value.getView().fit(pointLayer.value.getSource().getExtent(), {
+    duration: 800,
+    maxZoom: 6
+  })
 })
 </script>
 
