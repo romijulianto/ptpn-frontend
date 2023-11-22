@@ -13,7 +13,7 @@ const head = createHead()
 const pinia = createPinia()
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory("/ptpn"),
   routes: setupLayouts(routes)
 })
 
