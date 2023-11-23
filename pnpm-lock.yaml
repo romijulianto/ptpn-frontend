@@ -1,6 +1,8 @@
 lockfileVersion: '6.0'
+lockfileVersion: '6.0'
 
 settings:
+  autoInstallPeers: true
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
@@ -2447,7 +2449,7 @@ packages:
       '@babel/traverse': 7.22.4
       '@types/node': 20.4.0
       pug: 3.0.2
-      resolve: 1.22.2
+      resolve: 1.22.3
       vue-template-compiler: 2.7.14
     transitivePeerDependencies:
       - supports-color
@@ -5319,7 +5321,7 @@ packages:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
     dependencies:
       hosted-git-info: 2.8.9
-      resolve: 1.22.2
+      resolve: 1.22.3
       semver: 5.7.1
       validate-npm-package-license: 3.0.4
     dev: true
@@ -6197,14 +6199,6 @@ packages:
   /semver@6.3.0:
     resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
-    dev: true
-
-  /semver@7.5.1:
-    resolution: {integrity: sha512-Wvss5ivl8TMRZXXESstBA4uR5iXgEN/VC5/sOcuXdVLzcdkz4HWetIoRfG5gb5X+ij/G9rw9YoGn3QoQ8OCSpw==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
     dev: true
 
   /semver@7.5.3:
@@ -7327,7 +7321,7 @@ packages:
       espree: 9.5.2
       esquery: 1.5.0
       lodash: 4.17.21
-      semver: 7.5.1
+      semver: 7.5.3
     transitivePeerDependencies:
       - supports-color
     dev: true
